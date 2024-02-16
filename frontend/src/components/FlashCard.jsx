@@ -1,28 +1,19 @@
 import React, { useState } from 'react';
 
-const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answer, attemptsLeft }) => {
-  const [showHint, setShowHint] = useState(false);
-
-  const handleHintToggle = () => {
-    setShowHint(!showHint);
-    if (!showHint) { // Deduct points on showing hint
-      onHintToggle(); // This should now also handle disabling the hint button
-    }
-  };
-
+const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answer, attemptsLeft, hintVisible }) => {
   return (
-    <div className="flashcard bg-yellow-400 shadow-lg rounded-lg p-6 m-4 max-w-md mx-auto">
+    <div className="flashcard bg-yellow-400 bg-opacity-75 shadow-lg rounded-lg p-6 m-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-black mb-2">{challenge.title}</h2>
       <p className="text-md text-black my-2">{challenge.description}</p>
-      {showHint && <p className="hint text-sm italic my-2 bg-white p-2 rounded text-black">Hint: {challenge.hint}</p>}
+      {hintVisible && <p className="hint text-sm italic my-2 bg-white p-2 rounded text-black">Hint: {challenge.hint}</p>}
       <p className="points text-lg text-black">Points: {challenge.points}</p>
       <div className="actions flex justify-around my-4">
         <button 
-          onClick={handleHintToggle} 
-          disabled={showHint} // Disable button after showing hint
-          className={`hint-toggle btn ${showHint ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded`}
+          onClick={onHintToggle} 
+          disabled={hintVisible} // Adjust based on the hintVisible prop
+          className={`hint-toggle btn ${hintVisible ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded`}
         >
-          {showHint ? 'Hint Shown' : 'Show Hint'} (-3 points)
+          {hintVisible ? 'Hint Shown' : 'Show Hint'} (-3 points)
         </button>
         <a 
           href={`../data/${challenge.filename}`} 
@@ -51,5 +42,6 @@ const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answe
     </div>
   );
 };
+
 
 export default Flashcard;

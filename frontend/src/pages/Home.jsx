@@ -9,6 +9,11 @@ const Home = () => {
     const handleStartClick = () => {
       navigate('/start'); // Redirects to the UserInputPage
     };
+
+    // Handler for navigating to the leaderboard
+  const handleLeaderboardClick = () => {
+    navigate('/leaderboard'); // Redirects to the Leaderboard page
+  };
     
   return (
     <div className="bg-yellow-300 min-h-screen flex flex-col items-center justify-center space-y-4 px-4">
@@ -23,12 +28,20 @@ const Home = () => {
           <li>All the best!! Have Fun!!</li>
         </ul>
       </div>
-      <button 
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        onClick={handleStartClick}
-      >
-        Start
-      </button>
+      <div className="flex space-x-4">
+        <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={handleStartClick}
+        >
+          Start
+        </button>
+        <button 
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={handleLeaderboardClick}
+        >
+          Leaderboard
+        </button>
+      </div>
     </div>
   )
 }

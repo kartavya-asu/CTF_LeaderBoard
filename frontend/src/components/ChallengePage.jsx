@@ -8,51 +8,71 @@ const ChallengePage = () => {
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [attempts, setAttempts] = useState(3);
-  const [hintUsed, setHintUsed] = useState(false); // Add state to track hint usage
+  // const [hintUsed, setHintUsed] = useState(false); // Add state to track hint usage
   const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch challenges from the backend
     const fetchChallenges = async () => {
       const response = await axios.get('http://localhost:5555/challenges');
-      setChallenges(response.data);
+      const challengesWithHintsAndAttempts = response.data.map(challenge => ({
+        ...challenge,
+        attemptsLeft: 3,
+        frozen: false,
+        hintVisible: false 
+      }));
+      setChallenges(challengesWithHintsAndAttempts);
     };
     fetchChallenges();
   }, []);
 
   const handleHintToggle = () => {
-    setHintUsed(true); // Set hint used flag to true
+    setChallenges(challenges.map((challenge, index) => {
+      if (index === currentChallengeIndex) {
+        return { ...challenge, hintVisible: !challenge.hintVisible }; // Toggle hint visibility
+      }
+      return challenge;
+    }));
   };
 
   const handleAnswerSubmit = async () => {
-    if (attempts > 0) {
-      try {
+    const currentChallenge = challenges[currentChallengeIndex];
 
-        // Retrieve the code from session storage
+  if (currentChallenge.attemptsLeft > 0 && !currentChallenge.frozen) {
+    try {
       const code = sessionStorage.getItem('userCode');
-
-      // Ensure code exists before submitting
       if (!code) {
         alert("Error: User code not found. Please start over.");
         return;
       }
-      
-        const challengeId = challenges[currentChallengeIndex].id;
-        const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, code });
-        if (response.data.correct) {
-          alert("Correct answer!");
-          // Update points in UI if needed
-        } else {
-          setAttempts(attempts - 1);
-          alert("Wrong answer. Attempts left: " + (attempts - 1));
-        }
-        setHintUsed(false); // Reset hint used flag after submitting
-      } catch (error) {
-        console.error('Error:', error);
+
+      const challengeId = currentChallenge.id;
+      const hintUsed = currentChallenge.hintVisible;
+      const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, code });
+
+      // Determine if the challenge should be frozen
+      const isCorrect = response.data.correct;
+      const newAttemptsLeft = isCorrect ? currentChallenge.attemptsLeft : currentChallenge.attemptsLeft - 1;
+      const isFrozen = isCorrect || newAttemptsLeft <= 0;
+
+      if (isCorrect) {
+        alert("Correct answer!");
+      } else {
+        alert(`Wrong answer. Attempts left: ${newAttemptsLeft}`);
       }
-    } else {
-      alert("No more attempts left for this challenge.");
+
+      // Update the challenges array with the new state for the current challenge
+      const updatedChallenges = challenges.map((ch, index) => index === currentChallengeIndex ? { ...ch, attemptsLeft: newAttemptsLeft, frozen: isFrozen } : ch);
+      setChallenges(updatedChallenges);
+
+      // Reset hint used flag after submitting
+      // setHintUsed(false);
+    } catch (error) {
+      console.error('Error:', error);
     }
+  } else {
+    alert("No more attempts left for this challenge.");
+  }
   };
 
   const handleNext = () => {
@@ -77,7 +97,7 @@ const ChallengePage = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen" style={{ backgroundImage: "url('../assets/asu.webp')", backgroundSize: 'cover' }}>
+    <div className="flex flex-col items-center justify-center min-h-screen" style={{ backgroundImage: "url('/assets/asu.webp')", backgroundSize: 'cover' }}>
       <div className="w-full max-w-2xl">
         {challenges.length > 0 && (
           <Flashcard 
@@ -86,7 +106,8 @@ const ChallengePage = () => {
             onAnswerSubmit={handleAnswerSubmit}
             onSetAnswer={setAnswer}
             answer={answer}
-            attemptsLeft={attempts}
+            attemptsLeft={challenges[currentChallengeIndex].attemptsLeft}
+            hintVisible={challenges[currentChallengeIndex].hintVisible}
           />
         )}
 
