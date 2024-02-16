@@ -6,11 +6,6 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
           },
-        code: {
-            type: String,
-            unique: true,
-            required: true,
-          },
         points: {
             type: Number,
             default: 0,
