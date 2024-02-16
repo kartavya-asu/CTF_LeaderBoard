@@ -4,10 +4,11 @@ import axios  from 'axios';
 import Flashcard from './FlashCard';
 
 const ChallengePage = () => {
-    const [challenges, setChallenges] = useState([]);
+  const [challenges, setChallenges] = useState([]);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [attempts, setAttempts] = useState(3);
+  const [hintUsed, setHintUsed] = useState(false); // Add state to track hint usage
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,19 +21,24 @@ const ChallengePage = () => {
   }, []);
 
   const handleHintToggle = () => {
-    setChallenges(challenges.map((challenge, index) => {
-      if (index === currentChallengeIndex && challenge.points > 0) {
-        return { ...challenge, points: challenge.points - 3 };
-      }
-      return challenge;
-    }));
+    setHintUsed(true); // Set hint used flag to true
   };
 
   const handleAnswerSubmit = async () => {
     if (attempts > 0) {
       try {
+
+        // Retrieve the code from session storage
+      const code = sessionStorage.getItem('userCode');
+
+      // Ensure code exists before submitting
+      if (!code) {
+        alert("Error: User code not found. Please start over.");
+        return;
+      }
+      
         const challengeId = challenges[currentChallengeIndex].id;
-        const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer });
+        const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, code });
         if (response.data.correct) {
           alert("Correct answer!");
           // Update points in UI if needed
@@ -40,6 +46,7 @@ const ChallengePage = () => {
           setAttempts(attempts - 1);
           alert("Wrong answer. Attempts left: " + (attempts - 1));
         }
+        setHintUsed(false); // Reset hint used flag after submitting
       } catch (error) {
         console.error('Error:', error);
       }
@@ -51,11 +58,15 @@ const ChallengePage = () => {
   const handleNext = () => {
     if (currentChallengeIndex < challenges.length - 1) {
       setCurrentChallengeIndex(currentChallengeIndex + 1);
-      setAttempts(3); // Reset attempts for the new challenge
-      setAnswer(''); // Clear the answer input
+      setAttempts(3);
+      setAnswer('');
     } else {
-      // Handle end of challenges, maybe show a "Submit Test" button
+      navigate('/leaderboard'); // Redirect to leaderboard page after the last challenge
     }
+  };
+
+  const completeTest = () => {
+    navigate('/leaderboard'); // Redirect to leaderboard page
   };
 
   const handlePrevious = () => {
@@ -66,12 +77,16 @@ const ChallengePage = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen" style={{ backgroundImage: "url('../assets/asu.webp')", backgroundSize: 'cover' }}>
       <div className="w-full max-w-2xl">
         {challenges.length > 0 && (
           <Flashcard 
             challenge={challenges[currentChallengeIndex]}
-            // Pass other necessary props
+            onHintToggle={handleHintToggle}
+            onAnswerSubmit={handleAnswerSubmit}
+            onSetAnswer={setAnswer}
+            answer={answer}
+            attemptsLeft={attempts}
           />
         )}
 
@@ -83,13 +98,22 @@ const ChallengePage = () => {
           >
             Previous
           </button>
-          <button 
-            onClick={handleNext} 
-            disabled={currentChallengeIndex >= challenges.length - 1}
-            className={`py-2 px-4 rounded ${currentChallengeIndex >= challenges.length - 1 ? 'bg-gray-500 text-white cursor-not-allowed' : 'bg-green-500 hover:bg-green-700 text-white transition-colors duration-150'}`}
-          >
-            Next
-          </button>
+          {/* Conditionally render the "Next" or "Complete Test" button */}
+          {currentChallengeIndex < challenges.length - 1 ? (
+            <button 
+              onClick={handleNext} 
+              className="py-2 px-4 rounded bg-green-500 hover:bg-green-700 text-white transition-colors duration-150"
+            >
+              Next
+            </button>
+          ) : (
+            <button 
+              onClick={completeTest} 
+              className="py-2 px-4 rounded bg-red-500 hover:bg-red-700 text-white transition-colors duration-150"
+            >
+              Complete Test
+            </button>
+          )}
         </div>
       </div>
     </div>

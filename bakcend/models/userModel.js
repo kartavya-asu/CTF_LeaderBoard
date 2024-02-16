@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema(
           },
         code: {
             type: String,
+            unique: true,
             required: true,
           },
         points: {
