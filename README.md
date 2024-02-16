@@ -61,10 +61,20 @@ npm run dev
 
 ## MongoDB Connection
 
-Create a .env file in the root directory and add your MongoDB URI and any other environment variables:
+The database connection is configured in the `config.js` file located in the project's root directory. This setup supports both local MongoDB instances and MongoDB Atlas for cloud-based storage. To configure your MongoDB URI, edit the `config.js` file as follows:
 
-```bash
-MONGODB_URI=your_mongodb_uri
+- You will find `config.js` file in `backend/config.js` path
+
+- For a local MongoDB setup, specify:
+
+  ```javascript
+  export const mongoDBURL = "mongodb://localhost:27017/yourDatabaseName";
+  ```
+
+- For MongoDB Atlas, use your Atlas connection string:
+
+```javascript
+export const mongoDBURL = "your_atlas_connection_string";
 ```
 
 ## Usage
