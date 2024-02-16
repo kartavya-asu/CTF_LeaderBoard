@@ -33,67 +33,88 @@ These instructions will get you a copy of the project up and running on your loc
 ```bash
 git clone https://github.com/kartavya-asu/CTF_LeaderBoard.git
 
-cd CTF_LeaderBoard
+```
 
+2. Navigate to the repository:
+
+```bash
+cd CTF_LeaderBoard
+```
+
+3. To run backend server
+
+```bash
 ## open a terminal
 cd backend
 npm install
 npm start
+```
 
+4. To run frontend server
+
+```bash
 ## open a new terminal
 cd frontend
 npm install
-
-
+npm run dev
 ```
 
 ## MongoDB Connection
 
 Create a .env file in the root directory and add your MongoDB URI and any other environment variables:
+
+```bash
 MONGODB_URI=your_mongodb_uri
+```
 
 ## Usage
 
-1.Navigate to http://localhost:5173/ to access the application.
-2.Click on the "Start" button to begin participating in challenges.
-3.Use the "Show Hint" button if you need a hint for a challenge. Remember, using a hint deducts points.
-4.Submit your answers to challenges and view your updated rank on the leaderboard.
+- Navigate to http://localhost:5173/ to access the application.
+- Click on the "Start" button to begin participating in challenges.
+- Use the "Show Hint" button if you need a hint for a challenge. Remember, using a hint deducts points.
+- Submit your answers to challenges and view your updated rank on the leaderboard.
 
 ## Admin Use
 
-You can add challenges to challenges.json file
-backend/data/challenges.json
-example:
-[
-{
-"id": 1,
-"title": "Challenge 1",
-"description": "Solve the puzzle.",
-"hint": "Look closely at the details.",
-"filename": "dolls.jpg",
-"points": 100
-},
-{
-"id": 2,
-"title": "Challenge 2",
-"description": "Decode the message.",
-"hint": "Use the cipher provided.",
-"filename": "code2.png",
-"points": 150
-}
-]
+- You can add challenges to challenges.json file
+  Go to backend/data/challenges.json
+  example:
 
-Add appropriate answers to sulution.json
-example:
+```json
 [
-{
-"id": 1,
-"answer": "picoCTF{p}",
-"points": 100
-},
-{
-"id": 2,
-"answer": "picoCTF{k}",
-"points": 150
-}
+  {
+    "id": 1,
+    "title": "Challenge 1",
+    "description": "Solve the puzzle.",
+    "hint": "Look closely at the details.",
+    "filename": "dolls.jpg",
+    "points": 100
+  },
+  {
+    "id": 2,
+    "title": "Challenge 2",
+    "description": "Decode the message.",
+    "hint": "Use the cipher provided.",
+    "filename": "code2.png",
+    "points": 150
+  }
 ]
+```
+
+- Add appropriate answers to sulution.json
+  example
+
+```json
+[
+  {
+    "id": 1,
+    "answer": "picoCTF{p}",
+    "points": 100
+  },
+  {
+    "id": 2,
+    "answer": "picoCTF{k}",
+    "points": 150
+  }
+]
+```
