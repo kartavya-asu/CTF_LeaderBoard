@@ -17,8 +17,17 @@ router.post('/', async ( request, response )=>{
         });
     }
 
-    // Check if code is exactly 3 letters
+    //Check for uniqueness of the username
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+        return response.status(400).send({
+            message: 'Sorry!! Username already in Use, Please try a different one!!',
+        });
+    }
+
+    // Check if code is right
     if (code === CIPHER_CODE) {
+
       const newUser = { username };
       const user = await User.create(newUser);
   
@@ -29,13 +38,7 @@ router.post('/', async ( request, response )=>{
     });
     }
 
-    // Check for uniqueness of the code
-    // const existingUser = await User.findOne({ code });
-    // if (existingUser) {
-    //     return response.status(400).send({
-    //         message: 'Sorry!! Cipher code already in Use, Please try a different one!!',
-    //     });
-    // }
+    
 } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });

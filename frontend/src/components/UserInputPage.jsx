@@ -44,7 +44,7 @@ const UserInputPage = () => {
       <h2 className="text-2xl font-bold mb-6">Enter your details</h2>
       
       <div className="mb-4 w-full max-w-xs">
-        <label htmlFor="username" className="block text-black font-bold mb-2">Name:</label>
+        <label htmlFor="username" className="block text-black font-bold mb-2">UserName:</label>
         <input 
           type="text" 
           id="username"
@@ -53,6 +53,8 @@ const UserInputPage = () => {
           onChange={(e) => setUsername(e.target.value)}
           className="input input-bordered input-primary w-full p-2"
         />
+        <p className="text-xs mt-2 text-black">Username can be any combination of letters and numbers and must be unique.</p>
+
       </div>
       
       <div className="mb-6 w-full max-w-xs">

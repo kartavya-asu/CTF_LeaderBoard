@@ -73,9 +73,9 @@ The database connection is configured in the `config.js` file located in the pro
 
 - For MongoDB Atlas, use your Atlas connection string:
 
-```javascript
-export const mongoDBURL = "your_atlas_connection_string";
-```
+  ```javascript
+  export const mongoDBURL = "your_atlas_connection_string";
+  ```
 
 ## Usage
 
@@ -86,6 +86,10 @@ export const mongoDBURL = "your_atlas_connection_string";
 
 ## Admin Use
 
+- You can setup a cipher code in `backend/config.js` file:
+  ```javascript
+  export const CIPHER_CODE = "YOUR_CODE";
+  ```
 - You can add challenges to challenges.json file,
   Go to backend/data/challenges.json,
 - example:
