@@ -9,6 +9,8 @@ export default {
       colors: {
         'pacman-bg': '#FFFF00', // PAC-MAN yellow
         'pacman-text': '#0000FF', // PAC-MAN blue
+        'pacman-yellow': '#FFFF00',
+        'pacman-blue': '#0000FF',
       }
     },
   },
