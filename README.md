@@ -76,9 +76,9 @@ MONGODB_URI=your_mongodb_uri
 
 ## Admin Use
 
-- You can add challenges to challenges.json file
-  Go to backend/data/challenges.json
-  example:
+- You can add challenges to challenges.json file,
+  Go to backend/data/challenges.json,
+- example:
 
 ```json
 [
@@ -102,7 +102,7 @@ MONGODB_URI=your_mongodb_uri
 ```
 
 - Add appropriate answers to sulution.json
-  example
+- example
 
 ```json
 [
