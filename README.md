@@ -54,7 +54,7 @@ MONGODB_URI=your_mongodb_uri
 
 ## Usage
 
-1.Navigate to http://localhost:3000 to access the application.
+1.Navigate to http://localhost:5173/ to access the application.
 2.Click on the "Start" button to begin participating in challenges.
 3.Use the "Show Hint" button if you need a hint for a challenge. Remember, using a hint deducts points.
 4.Submit your answers to challenges and view your updated rank on the leaderboard.
