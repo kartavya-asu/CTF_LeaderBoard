@@ -60,11 +60,11 @@ const UserInputPage = () => {
       <div className="mb-6 w-full max-w-xs">
         <label htmlFor="code" className="block text-black font-bold mb-2">Cipher Code:</label>
         <input 
-          type="text" 
+          type="password" 
           id="code" 
           placeholder="Cipher Code" 
           value={code} 
-          onChange={(e) => setCode(e.target.value.toUpperCase())}
+          onChange={(e) => setCode(e.target.value)}
           className="input input-bordered input-primary w-full p-2"
         />
         {/* <p className="text-xs mt-2 text-black">Cipher code can be any combination of letters and numbers and must be 3 characters long.</p> */}
