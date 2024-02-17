@@ -39,7 +39,7 @@ const UserInputPage = () => {
       // Store the code in session storage upon successful creation
       sessionStorage.setItem('userCode', username);
   
-      navigate('/challenges');
+      navigate('/challenges-page');
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
       enqueueSnackbar(error.response ? error.response.data.message : "An unexpected error occurred", { variant: 'error' });
