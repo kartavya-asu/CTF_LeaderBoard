@@ -10,7 +10,15 @@ import mongoose from "mongoose";
 
 import cors from "cors";
 
+import path from "path";
 
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
+const reactDirPath = path.join(__dirname,'..','/..','/frontend');
 
 const app = express();
 
@@ -21,6 +29,14 @@ app.use(cors());
 app.use('/users', userRoute);
 
 app.use('/challenges', challengeRoute);
+
+// Serve static files from the React app
+app.use(express.static(path.join(reactDirPath, 'dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(reactDirPath+'/dist/index.html'));
+  });
+
 
 mongoose.connect(mongoDBURL)
     .then(()=>{
