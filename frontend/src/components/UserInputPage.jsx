@@ -33,7 +33,7 @@ const UserInputPage = () => {
     const data = { username, code };
   
     try {
-      const response = await axios.post('http://localhost:5555/users', data);
+      const response = await axios.post('ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/users', data);
       console.log('User Created', response.data);
   
       // Store the code in session storage upon successful creation

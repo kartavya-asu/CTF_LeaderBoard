@@ -9,7 +9,7 @@ const LeaderBoard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5555/users'); // Adjust the URL as needed
+        const response = await axios.get('ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/users'); // Adjust the URL as needed
         setUsers(response.data);
       } catch (error) {
         console.error('Failed to fetch users:', error);

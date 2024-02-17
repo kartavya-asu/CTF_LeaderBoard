@@ -15,7 +15,7 @@ const ChallengePage = () => {
 
 
   const fetchChallenges = async () => {
-    const response = await axios.get('http://localhost:5555/challenges');
+    const response = await axios.get('ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/challenges');
     const challengesWithHintsAndAttempts = response.data.map(challenge => ({
       ...challenge,
       attemptsLeft: 3,
@@ -74,7 +74,7 @@ const ChallengePage = () => {
 
       const challengeId = currentChallenge.id;
       const hintUsed = currentChallenge.hintVisible;
-      const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, username });
+      const response = await axios.post('ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/challenges/submit', { challengeId, answer, hintUsed, username });
 
       // Determine if the challenge should be frozen
       const isCorrect = response.data.correct;
