@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-const reactDirPath = path.join(__dirname,'/frontend');
+const reactDirPath = path.join(__dirname,'..','/frontend');
 
 const app = express();
 
