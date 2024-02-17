@@ -2,37 +2,63 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios  from 'axios';
 import Flashcard from './FlashCard';
+import { useSnackbar } from 'notistack';
 
 const ChallengePage = () => {
   const [challenges, setChallenges] = useState([]);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   const [answer, setAnswer] = useState('');
-  const [attempts, setAttempts] = useState(3);
+  // const [attempts, setAttempts] = useState(3);
   // const [hintUsed, setHintUsed] = useState(false); // Add state to track hint usage
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
+
+  const fetchChallenges = async () => {
+    const response = await axios.get('http://localhost:5555/challenges');
+    const challengesWithHintsAndAttempts = response.data.map(challenge => ({
+      ...challenge,
+      attemptsLeft: 3,
+      frozen: false,
+      hintVisible: false,
+      answer: '' 
+    }));
+    return challengesWithHintsAndAttempts;
+  };
+
   useEffect(() => {
-    // Fetch challenges from the backend
-    const fetchChallenges = async () => {
-      const response = await axios.get('http://localhost:5555/challenges');
-      const challengesWithHintsAndAttempts = response.data.map(challenge => ({
-        ...challenge,
-        attemptsLeft: 3,
-        frozen: false,
-        hintVisible: false 
-      }));
-      setChallenges(challengesWithHintsAndAttempts);
+    sessionStorage.setItem('testStarted',true);
+    const init = async () => {
+      const savedChallenges = sessionStorage.getItem('challenges');
+      const savedIndex = sessionStorage.getItem('currentChallengeIndex');
+  
+      if (savedChallenges && savedIndex !== null) {
+        setChallenges(JSON.parse(savedChallenges));
+        setCurrentChallengeIndex(parseInt(savedIndex, 10));
+      } else {
+        const challengesWithHintsAndAttempts = await fetchChallenges();
+        setChallenges(challengesWithHintsAndAttempts);
+      }
     };
-    fetchChallenges();
+  
+    init();
   }, []);
 
+  useEffect(() => {
+    if (challenges.length > 0) {
+      sessionStorage.setItem('challenges', JSON.stringify(challenges));
+      sessionStorage.setItem('currentChallengeIndex', currentChallengeIndex.toString());
+    }
+  }, [challenges, currentChallengeIndex]);
+
   const handleHintToggle = () => {
-    setChallenges(challenges.map((challenge, index) => {
+    const updatedChallenges = challenges.map((challenge, index) => {
       if (index === currentChallengeIndex) {
-        return { ...challenge, hintVisible: !challenge.hintVisible }; // Toggle hint visibility
+        return { ...challenge, hintVisible: !challenge.hintVisible };
       }
       return challenge;
-    }));
+    });
+    setChallenges(updatedChallenges);
   };
 
   const handleAnswerSubmit = async () => {
@@ -40,15 +66,15 @@ const ChallengePage = () => {
 
   if (currentChallenge.attemptsLeft > 0 && !currentChallenge.frozen) {
     try {
-      const code = sessionStorage.getItem('userCode');
-      if (!code) {
-        alert("Error: User code not found. Please start over.");
+      const username = sessionStorage.getItem('userCode');
+      if (!username) {
+        enqueueSnackbar("Error: User code not found. Please start over.", { variant: 'error' });
         return;
       }
 
       const challengeId = currentChallenge.id;
       const hintUsed = currentChallenge.hintVisible;
-      const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, code });
+      const response = await axios.post('http://localhost:5555/challenges/submit', { challengeId, answer, hintUsed, username });
 
       // Determine if the challenge should be frozen
       const isCorrect = response.data.correct;
@@ -56,29 +82,31 @@ const ChallengePage = () => {
       const isFrozen = isCorrect || newAttemptsLeft <= 0;
 
       if (isCorrect) {
-        alert("Correct answer!");
+        enqueueSnackbar("Correct answer!", { variant: 'success' });
+        challenges[currentChallengeIndex].answer = answer;
+        // setAnswer('');
       } else {
-        alert(`Wrong answer. Attempts left: ${newAttemptsLeft}`);
+        enqueueSnackbar(`Wrong answer. Attempts left: ${newAttemptsLeft}`, { variant: 'error' });
       }
 
       // Update the challenges array with the new state for the current challenge
       const updatedChallenges = challenges.map((ch, index) => index === currentChallengeIndex ? { ...ch, attemptsLeft: newAttemptsLeft, frozen: isFrozen } : ch);
       setChallenges(updatedChallenges);
-
       // Reset hint used flag after submitting
       // setHintUsed(false);
     } catch (error) {
       console.error('Error:', error);
+      enqueueSnackbar("An error occurred while submitting your answer. Please try again.", { variant: 'error' });
     }
   } else {
-    alert("No more attempts left for this challenge.");
+    enqueueSnackbar("No more attempts left for this challenge.", { variant: 'error' });
   }
   };
 
   const handleNext = () => {
     if (currentChallengeIndex < challenges.length - 1) {
       setCurrentChallengeIndex(currentChallengeIndex + 1);
-      setAttempts(3);
+      // setAttempts(3);
       setAnswer('');
     } else {
       navigate('/leaderboard'); // Redirect to leaderboard page after the last challenge
@@ -87,17 +115,16 @@ const ChallengePage = () => {
 
   const completeTest = () => {
     navigate('/leaderboard'); // Redirect to leaderboard page
+    sessionStorage.clear(); 
   };
 
   const handlePrevious = () => {
     if (currentChallengeIndex > 0) {
       setCurrentChallengeIndex(currentChallengeIndex - 1);
-      setAttempts(3); // Reset attempts for the new challenge
-      setAnswer(''); // Clear the answer input
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen" style={{ backgroundImage: "url('/assets/asu.webp')", backgroundSize: 'cover' }}>
+    <div className="flex flex-col items-center justify-center min-h-screen" style={{ backgroundImage: `url('${import.meta.env.BASE_URL}assets/asu.webp')`, backgroundSize: 'cover' }}>
       <div className="w-full max-w-2xl">
         {challenges.length > 0 && (
           <Flashcard 
@@ -105,9 +132,10 @@ const ChallengePage = () => {
             onHintToggle={handleHintToggle}
             onAnswerSubmit={handleAnswerSubmit}
             onSetAnswer={setAnswer}
-            answer={answer}
+            answer={challenges[currentChallengeIndex].answer ? challenges[currentChallengeIndex].answer : answer}
             attemptsLeft={challenges[currentChallengeIndex].attemptsLeft}
             hintVisible={challenges[currentChallengeIndex].hintVisible}
+            frozen={challenges[currentChallengeIndex].frozen}
           />
         )}
 

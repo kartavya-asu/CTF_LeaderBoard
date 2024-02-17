@@ -26,7 +26,7 @@
     {
       "id": 4,
       "title": "Inspect HTML",
-      "description": "Can you get the flag? Go to this website and see what you can discover. website: http://saturn.picoctf.net:64200/",
+      "description": "Can you get the flag? Open a new Tab, Go to this website and see what you can discover. website: 'http://saturn.picoctf.net:64200/'",
       "hint": "What is the web inspector in web browsers?",
       "filename": "",
       "points": 10

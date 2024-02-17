@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
   });
 
   router.post('/submit', async (req, res) => {
-    const { challengeId, answer, hintUsed, code } = req.body;
+    const { challengeId, answer, hintUsed, username } = req.body;
 
     try {
         // Correctly use async/await to read and parse the solutions file
@@ -39,9 +39,9 @@ router.get('/', (req, res) => {
 
         if (!solution) {
             return res.status(404).send({ message: 'Challenge not found.' });
-        }
+        }   
 
-        const user = await User.findOne({ code });
+        const user = await User.findOne({ username });
 
         if (!user) {
             return res.status(404).send({ message: 'User not found.' });

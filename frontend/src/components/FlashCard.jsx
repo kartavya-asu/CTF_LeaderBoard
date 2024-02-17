@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answer, attemptsLeft, hintVisible }) => {
+const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answer, attemptsLeft, hintVisible, frozen }) => {
   return (
     <div className="flashcard bg-yellow-400 bg-opacity-75 shadow-lg rounded-lg p-6 m-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-black mb-2">{challenge.title}</h2>
@@ -10,19 +10,24 @@ const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answe
       <div className="actions flex justify-around my-4">
         <button 
           onClick={onHintToggle} 
-          disabled={hintVisible} // Adjust based on the hintVisible prop
+          disabled={hintVisible || frozen } // Adjust based on the hintVisible prop
           className={`hint-toggle btn ${hintVisible ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded`}
         >
           {hintVisible ? 'Hint Shown' : 'Show Hint'} (-3 points)
         </button>
-        <a 
-          href={`../data/${challenge.filename}`} 
+        {challenge.filename &&(<a 
+          href={`${import.meta.env.BASE_URL}data/${challenge.filename}`} 
           download 
           className="download btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         >
           Download File
-        </a>
+        </a>)}
       </div>
+      {frozen && (
+    <div className="text-center text-lg font-bold my-4" style={{ color: '#800000' }}>
+      Correct Answer Submitted!
+    </div>
+  )}
       <div className="answer-section">
         <input 
           type="text" 

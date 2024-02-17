@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios  from 'axios';
 import { useSnackbar } from 'notistack';
@@ -8,6 +8,16 @@ const UserInputPage = () => {
   const [code, setCode] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const checkTestStarted = () => {
+      if(sessionStorage.getItem('testStarted')) {
+        navigate('/warningpage');
+      }
+    };
+
+    checkTestStarted();
+  }, [navigate]);
 
   const handlePlayClick = async () => {
     if (!username.trim()) {

@@ -65,7 +65,7 @@ The database connection is configured in the `config.js` file located in the pro
 
 - You will find `config.js` file in `backend/config.js` path
 
-- For a local MongoDB setup, specify:
+- For a local MongoDB setup:
 
   ```javascript
   export const mongoDBURL = "mongodb://localhost:27017/yourDatabaseName";
@@ -81,6 +81,7 @@ The database connection is configured in the `config.js` file located in the pro
 
 - Navigate to http://localhost:5173/ to access the application.
 - Click on the "Start" button to begin participating in challenges.
+- Enter user name and cipher code (set by Admin) and click play to start the challenge
 - Use the "Show Hint" button if you need a hint for a challenge. Remember, using a hint deducts points.
 - Submit your answers to challenges and view your updated rank on the leaderboard.
 
