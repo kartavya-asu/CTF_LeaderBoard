@@ -1,7 +1,5 @@
 import express from "express";
 
-// import { PORT, mongoDBURL } from "./config.js";
-
 import userRoute from "./routes/userRoute.js"
 
 import challengeRoute from "./routes/challengeRoute.js";
