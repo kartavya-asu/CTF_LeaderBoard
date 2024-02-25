@@ -147,3 +147,68 @@ The database connection is configured using the `MONGODB_URL` environment variab
   }
 ]
 ```
+
+## Running in Production
+
+To deploy the Capture The Flag (CTF) Challenge App in a production environment, you'll need to build the frontend and set up the backend server to run continuously, even after closing the terminal session. This section guides you through preparing the application for production use. Make sure you have install Node.js and created .env files as suggested above.
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/kartavya-asu/CTF_LeaderBoard.git
+
+```
+
+2. Navigate to the repository:
+
+```bash
+cd CTF_LeaderBoard
+```
+
+# Building the Frontend
+
+First, you need to compile the frontend to static files that can be served by your backend or a web server.
+
+Navigate to the frontend directory, Run the build command to create a production build of your React app:
+
+```bash
+## open a terminal
+cd frontend
+npm install
+npm run build
+```
+
+This command generates a `dist` directory inside the `frontend` folder, containing the compiled static files.
+
+# Setting Up the Backend with PM2
+
+After building the frontend, the next step is to ensure your backend server runs continuously. We recommend using PM2, a process manager for Node.js applications, which helps keep your app alive and reloads it without downtime.
+
+1. Install PM2 globally on your machine:
+
+```bash
+npm install pm2 -g
+```
+
+This allows you to use PM2 commands from anywhere in your terminal.
+
+2. Navigate to the backend directory (adjust the path as needed if you're not in the project root), Start your server with PM2:
+
+```bash
+cd backend
+pm2 start index.js
+```
+
+PM2 will now keep your server running in the background. You can check the status of your PM2-managed applications anytime with:
+
+```bash
+pm2 status
+```
+
+# Additional PM2 Commands
+
+- Restart an application: `pm2 restart <app_name_or_id>`
+- Stop an application: `pm2 stop <app_name_or_id>`
+- Delete an application from PM2's list: `pm2 delete <app_name_or_id>`
+
+For more detailed documentation on PM2 and its features, visit the [PM2 documentation](https://www.npmjs.com/package/pm2).
