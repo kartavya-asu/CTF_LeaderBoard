@@ -63,7 +63,7 @@ npm run dev
 
 To securely manage your application's configuration, you will need to create `.env` files in both the backend and frontend directories. These files will include environment variables specific to each part of your application.
 
-# Backend Configuration
+### Backend Configuration
 
 Before running the application, create a `.env` file in the `backend` directory to securely manage your application configuration. This file should include the following environment variables:
 
@@ -76,7 +76,7 @@ CIPHER_CODE="YOUR_CODE"
 
 Note: Replace `"port_number"`,`"your_mongodb_connection_string"` and `"YOUR_CODE"` with your actual Port Number(for e.g: 5555), MongoDB connection string and cipher code, respectively.
 
-# Frontend Configuration
+### Frontend Configuration
 
 For the frontend, we're using Vite, which simplifies the process of loading environment variables.
 
