@@ -61,6 +61,10 @@ npm run dev
 
 ## Environment Configuration
 
+To securely manage your application's configuration, you will need to create `.env` files in both the backend and frontend directories. These files will include environment variables specific to each part of your application.
+
+# Backend Configuration
+
 Before running the application, create a `.env` file in the `backend` directory to securely manage your application configuration. This file should include the following environment variables:
 
 ```text
@@ -71,6 +75,20 @@ CIPHER_CODE="YOUR_CODE"
 ```
 
 Note: Replace `"port_number"`,`"your_mongodb_connection_string"` and `"YOUR_CODE"` with your actual Port Number(for e.g: 5555), MongoDB connection string and cipher code, respectively.
+
+# Frontend Configuration
+
+For the frontend, we're using Vite, which simplifies the process of loading environment variables.
+
+In the `frontend` directory of your project, create `.env` file, Use the VITE\_ prefix for each variable to ensure they are exposed to your project. For example:
+
+```text
+VITE_API_URL=http://localhost:5555
+```
+
+Utilize `import.meta.env` to access your environment variables within your React components.
+
+Note: Variables must be prefixed with `VITE_` to be accessible in your project. Vite embeds the environment variables at build time; thus, any changes to `.env` files require a rebuild of your project to take effect.
 
 ## MongoDB Connection
 
