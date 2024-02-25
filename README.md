@@ -165,7 +165,7 @@ git clone https://github.com/kartavya-asu/CTF_LeaderBoard.git
 cd CTF_LeaderBoard
 ```
 
-# Building the Frontend
+### Building the Frontend
 
 First, you need to compile the frontend to static files that can be served by your backend or a web server.
 
@@ -180,7 +180,7 @@ npm run build
 
 This command generates a `dist` directory inside the `frontend` folder, containing the compiled static files.
 
-# Setting Up the Backend with PM2
+### Setting Up the Backend with PM2
 
 After building the frontend, the next step is to ensure your backend server runs continuously. We recommend using PM2, a process manager for Node.js applications, which helps keep your app alive and reloads it without downtime.
 
@@ -205,10 +205,42 @@ PM2 will now keep your server running in the background. You can check the statu
 pm2 status
 ```
 
-# Additional PM2 Commands
+### Additional PM2 Commands
 
 - Restart an application: `pm2 restart <app_name_or_id>`
 - Stop an application: `pm2 stop <app_name_or_id>`
 - Delete an application from PM2's list: `pm2 delete <app_name_or_id>`
 
 For more detailed documentation on PM2 and its features, visit the [PM2 documentation](https://www.npmjs.com/package/pm2).
+
+## Deployment and Accessibility in Production
+
+Once you have prepared your application for production by building the frontend and setting up the backend with PM2, the next step is to ensure that your application is accessible to users. This involves configuring your server's network settings to allow incoming connections on the port your application is running on. While the exact steps can vary depending on your hosting environment (such as AWS EC2, DigitalOcean, Google Cloud, etc.), the general principles are the same.
+
+### Configuring Network Access
+
+To make your application accessible through your server's public IP address and a specific port, follow these general steps:
+
+Open Server Port: Ensure that the port your `backend` application runs on (e.g., 5555) is open on your server. This may involve adjusting firewall settings or network access rules to allow incoming TCP connections on that port.
+
+Set Inbound Rules (For Cloud Hosts): If you are using a cloud hosting provider (like AWS EC2, Google Cloud VM, etc.), you'll likely need to set inbound network rules. Typically, you should allow TCP traffic on your application's port (e.g., 5555) from any source (0.0.0.0/0 and ::/0 for IPv4 and IPv6, respectively) to ensure it's accessible from the internet.
+
+Verify Security Groups (AWS): On AWS EC2, for example, make sure the security group associated with your instance has an inbound rule that allows traffic on the port your app is using.
+
+Use a Domain Name (Optional): For a more user-friendly access method, consider assigning a domain name to your server's IP address. This can be done through DNS settings with your domain registrar, where you would create an A record pointing to your server's IP.
+
+### Testing Accessibility
+
+After configuring network access, test the application's accessibility:
+
+- Open a web browser and navigate to `http://<Your_Server_IP>:<App_Port>`, replacing `<Your_Server_IP>` with your server's public IP address and `<App_Port>` with the port number your application is running on (e.g., 5555).
+
+### Monitoring and Management
+
+- Monitoring: Use tools like PM2, which not only manages your Node.js application processes but also provides basic monitoring capabilities.
+- Logs: Regularly check your application and server logs to ensure smooth operation and to troubleshoot any issues.
+
+### Security Considerations
+
+- SSL/TLS: For production environments, especially those handling sensitive information, it's strongly recommended to set up SSL/TLS encryption to secure data in transit. This can be achieved by obtaining an SSL certificate (Let's Encrypt offers them for free) and configuring your server or a reverse proxy like Nginx to use HTTPS.
+- Environment Variables: Keep sensitive information such as database connection strings, API keys, and secret tokens in environment variables or secure secret management services provided by cloud platforms.
