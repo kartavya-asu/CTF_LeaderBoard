@@ -9,6 +9,8 @@ const UserInputPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   let navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const checkTestStarted = () => {
       if(sessionStorage.getItem('testStarted')) {
@@ -33,7 +35,7 @@ const UserInputPage = () => {
     const data = { username, code };
   
     try {
-      const response = await axios.post('http://ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/users', data);
+      const response = await axios.post(`${apiUrl}/users`, data);
       console.log('User Created', response.data);
   
       // Store the code in session storage upon successful creation
@@ -43,9 +45,7 @@ const UserInputPage = () => {
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
       enqueueSnackbar(error.response ? error.response.data.message : "An unexpected error occurred", { variant: 'error' });
-      // if (error.response && error.response.status === 401) {
-      //   alert(error.response.data.message); // Show error message from backend
-      // }
+
     }
   };
 
@@ -77,7 +77,6 @@ const UserInputPage = () => {
           onChange={(e) => setCode(e.target.value)}
           className="input input-bordered input-primary w-full p-2"
         />
-        {/* <p className="text-xs mt-2 text-black">Cipher code can be any combination of letters and numbers and must be 3 characters long.</p> */}
       </div>
 
       <button 

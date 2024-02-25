@@ -6,12 +6,13 @@ const Admin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     let navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (event) => {
     const data = { username, password };
 
     try {
-        const response = await axios.post('http://localhost:5555/admin', data);
+        const response = await axios.post(`${apiUrl}/admin`, data);
         console.log(response.data.message);
         navigate('/admindashboard');
     } catch (error) {

@@ -25,7 +25,7 @@ const Flashcard = ({ challenge, onHintToggle, onAnswerSubmit, onSetAnswer, answe
       </div>
       {frozen && (
     <div className="text-center text-lg font-bold my-4" style={{ color: '#800000' }}>
-      Correct Answer Submitted!
+      Answer Submitted!
     </div>
   )}
       <div className="answer-section">

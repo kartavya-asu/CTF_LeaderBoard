@@ -5,11 +5,12 @@ import axios from 'axios';
 const LeaderBoard = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/users'); // Adjust the URL as needed
+        const response = await axios.get(`${apiUrl}/users`); 
         setUsers(response.data);
       } catch (error) {
         console.error('Failed to fetch users:', error);
@@ -38,7 +39,7 @@ const LeaderBoard = () => {
         <thead className="bg-yellow-500 text-black">
           <tr>
             <th className="py-3 px-4 text-center">Rank</th>
-            <th className="py-3 px-4 text-center">Name</th> {/* Ensure alignment */}
+            <th className="py-3 px-4 text-center">Name</th> 
             <th className="py-3 px-4 text-center">Points</th>
           </tr>
         </thead>
@@ -46,7 +47,7 @@ const LeaderBoard = () => {
           {users.map((user, index) => (
             <tr key={user._id} className="border-b border-yellow-700">
               <td className="py-2 px-4 text-center">{index + 1}</td>
-              <td className="py-2 px-4 text-center">{user.username}</td> {/* Ensure alignment */}
+              <td className="py-2 px-4 text-center">{user.username}</td> 
               <td className="py-2 px-4 text-center">{user.points}</td>
             </tr>
           ))}

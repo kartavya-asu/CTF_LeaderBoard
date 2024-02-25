@@ -8,14 +8,13 @@ const ChallengePage = () => {
   const [challenges, setChallenges] = useState([]);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   const [answer, setAnswer] = useState('');
-  // const [attempts, setAttempts] = useState(3);
-  // const [hintUsed, setHintUsed] = useState(false); // Add state to track hint usage
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
 
   const fetchChallenges = async () => {
-    const response = await axios.get('http://ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/challenges');
+    const response = await axios.get(`${apiUrl}/challenges`);
     const challengesWithHintsAndAttempts = response.data.map(challenge => ({
       ...challenge,
       attemptsLeft: 3,
@@ -74,7 +73,7 @@ const ChallengePage = () => {
 
       const challengeId = currentChallenge.id;
       const hintUsed = currentChallenge.hintVisible;
-      const response = await axios.post('http://ec2-3-17-5-83.us-east-2.compute.amazonaws.com:5555/challenges/submit', { challengeId, answer, hintUsed, username });
+      const response = await axios.post(`${apiUrl}/challenges/submit`, { challengeId, answer, hintUsed, username });
 
       // Determine if the challenge should be frozen
       const isCorrect = response.data.correct;
@@ -84,7 +83,6 @@ const ChallengePage = () => {
       if (isCorrect) {
         enqueueSnackbar("Correct answer!", { variant: 'success' });
         challenges[currentChallengeIndex].answer = answer;
-        // setAnswer('');
       } else {
         enqueueSnackbar(`Wrong answer. Attempts left: ${newAttemptsLeft}`, { variant: 'error' });
       }
@@ -92,8 +90,6 @@ const ChallengePage = () => {
       // Update the challenges array with the new state for the current challenge
       const updatedChallenges = challenges.map((ch, index) => index === currentChallengeIndex ? { ...ch, attemptsLeft: newAttemptsLeft, frozen: isFrozen } : ch);
       setChallenges(updatedChallenges);
-      // Reset hint used flag after submitting
-      // setHintUsed(false);
     } catch (error) {
       console.error('Error:', error);
       enqueueSnackbar("An error occurred while submitting your answer. Please try again.", { variant: 'error' });
@@ -106,7 +102,6 @@ const ChallengePage = () => {
   const handleNext = () => {
     if (currentChallengeIndex < challenges.length - 1) {
       setCurrentChallengeIndex(currentChallengeIndex + 1);
-      // setAttempts(3);
       setAnswer('');
     } else {
       navigate('/leaderboard'); // Redirect to leaderboard page after the last challenge
