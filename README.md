@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- - **Node.js 20.10.0 or newer**: Ensure you have Node.js version 20.10.0 or newer installed on your system. If you need to install or upgrade Node.js, visit [the official Node.js website](https://nodejs.org/) for download instructions.
+- **Node.js 20.10.0 or newer**: Ensure you have Node.js version 20.10.0 or newer installed on your system. If you need to install or upgrade Node.js, visit [the official Node.js website](https://nodejs.org/) for download instructions.
 - npm or yarn
 - MongoDB
 
