@@ -26,7 +26,7 @@ These instructions will get you a copy of the project up and running on your loc
 - npm or yarn
 - MongoDB
 
-### Installation
+## Installation
 
 1. Clone the repository:
 
@@ -41,24 +41,6 @@ git clone https://github.com/kartavya-asu/CTF_LeaderBoard.git
 cd CTF_LeaderBoard
 ```
 
-3. To run backend server
-
-```bash
-## open a terminal
-cd backend
-npm install
-npm start
-```
-
-4. To run frontend server
-
-```bash
-## open a new terminal
-cd frontend
-npm install
-npm run dev
-```
-
 ## Environment Configuration
 
 To securely manage your application's configuration, you will need to create `.env` files in both the backend and frontend directories. These files will include environment variables specific to each part of your application.
@@ -69,12 +51,12 @@ Before running the application, create a `.env` file in the `backend` directory 
 
 ```text
 # .env file content
-PORT="port_number"
-MONGODB_URL="your_mongodb_connection_string"
-CIPHER_CODE="YOUR_CODE"
+PORT=port_number
+MONGODB_URL=your_mongodb_connection_string
+CIPHER_CODE=YOUR_CODE
 ```
 
-Note: Replace `"port_number"`,`"your_mongodb_connection_string"` and `"YOUR_CODE"` with your actual Port Number(for e.g: 5555), MongoDB connection string and cipher code, respectively.
+Note: Replace `port_number`,`your_mongodb_connection_string` and `YOUR_CODE` with your actual Port Number(for e.g: 5555), MongoDB connection string and cipher code, respectively.
 
 ### Frontend Configuration
 
@@ -90,9 +72,27 @@ Utilize `import.meta.env` to access your environment variables within your React
 
 Note: Variables must be prefixed with `VITE_` to be accessible in your project. Vite embeds the environment variables at build time; thus, any changes to `.env` files require a rebuild of your project to take effect.
 
-## MongoDB Connection
+### MongoDB Connection
 
 The database connection is configured using the `MONGODB_URL` environment variable specified in the `.env` file. This setup supports both local MongoDB instances and MongoDB Atlas for cloud-based storage.
+
+### To run backend server
+
+```bash
+## open a terminal
+cd backend
+npm install
+npm start
+```
+
+### To run frontend server
+
+```bash
+## open a new terminal
+cd frontend
+npm install
+npm run dev
+```
 
 ## Usage
 
