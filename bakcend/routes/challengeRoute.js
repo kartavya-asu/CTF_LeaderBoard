@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
     const { challengeId, answer, hintUsed, username } = req.body;
 
     try {
-        // Correctly use async/await to read and parse the solutions file
+    
         const data = await fsp.readFile(path.join(dataDirPath, 'solution.json'), 'utf8');
         const solutions = JSON.parse(data);
         
@@ -64,7 +64,6 @@ router.get('/', (req, res) => {
         user.points += Math.max(pointsToAdd, 0);
         await user.save();
 
-        // res.json({ userPoints: user.points });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Internal server error' });

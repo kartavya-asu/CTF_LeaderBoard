@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Node.js
+- Node.js 20.10.0 or newer: Ensure you have Node.js version 20.10.0 or newer installed on your system. If you need to install or upgrade Node.js, visit the official Node.js website for download instructions.
 - npm or yarn
 - MongoDB
 
@@ -59,23 +59,22 @@ npm install
 npm run dev
 ```
 
+## Environment Configuration
+
+Before running the application, create a `.env` file in the `backend` directory to securely manage your application configuration. This file should include the following environment variables:
+
+```text
+# .env file content
+PORT="port_number"
+MONGODB_URL="your_mongodb_connection_string"
+CIPHER_CODE="YOUR_CODE"
+```
+
+Note: Replace `"port_number"`,`"your_mongodb_connection_string"` and `"YOUR_CODE"` with your actual Port Number(for e.g: 5555), MongoDB connection string and cipher code, respectively.
+
 ## MongoDB Connection
 
-The database connection is configured in the `config.js` file located in the project's root directory. This setup supports both local MongoDB instances and MongoDB Atlas for cloud-based storage. To configure your MongoDB URI, edit the `config.js` file as follows:
-
-- You will find `config.js` file in `backend/config.js` path
-
-- For a local MongoDB setup:
-
-  ```javascript
-  export const mongoDBURL = "mongodb://localhost:27017/yourDatabaseName";
-  ```
-
-- For MongoDB Atlas, use your Atlas connection string:
-
-  ```javascript
-  export const mongoDBURL = "your_atlas_connection_string";
-  ```
+The database connection is configured using the `MONGODB_URL` environment variable specified in the `.env` file. This setup supports both local MongoDB instances and MongoDB Atlas for cloud-based storage.
 
 ## Usage
 
@@ -87,10 +86,7 @@ The database connection is configured in the `config.js` file located in the pro
 
 ## Admin Use
 
-- You can setup a cipher code in `backend/config.js` file:
-  ```javascript
-  export const CIPHER_CODE = "YOUR_CODE";
-  ```
+- You can set up a cipher code in the `.env` file as `CIPHER_CODE`.
 - You can add challenges to challenges.json file,
   Go to backend/data/challenges.json,
 - example:

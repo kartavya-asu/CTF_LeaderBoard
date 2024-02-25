@@ -2,7 +2,7 @@ import express from "express";
 
 import { User } from "../models/userModel.js";
 
-import { CIPHER_CODE } from "../config.js";
+const CIPHER_CODE = process.env.CIPHER_CODE;
 
 const router = express.Router();
 
